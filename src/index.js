@@ -1,6 +1,7 @@
 import express from "express";
 import * as Sentry from "@sentry/node";
 import "dotenv/config";
+import categoryRouter from "./routes/categories.js";
 
 const app = express();
 
@@ -36,9 +37,7 @@ app.get("/", (req, res) => {
   res.send("Hello world!");
 });
 
-app.get("/debug-sentry", function mainHandler(req, res) {
-  throw new Error("My first Sentry error!");
-});
+app.use("/categories", categoryRouter);
 
 // ------------------------------------------------
 // ------------------------------------------------
