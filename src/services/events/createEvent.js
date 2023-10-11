@@ -29,17 +29,4 @@ const createEvent = (
   return newEvent;
 };
 
-// example for testing
-const example = createEvent(
-  1,
-  "relaxing",
-  "chill",
-  "url",
-  1,
-  "home",
-  "10pm",
-  "11pm"
-);
-console.log(example);
-
 export default createEvent;
