@@ -10,71 +10,46 @@ const userRouter = express.Router();
 
 // First '/' routes, main routes
 userRouter.get("/", (req, res) => {
-  try {
-    const { name } = req.query;
-    const users = getUsers(name);
-    res.status(200).json(users);
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Something went wrong while getting list of users!");
-  }
+  const { name } = req.query;
+  const users = getUsers(name);
+  res.status(200).json(users);
 });
 
 userRouter.post("/", authMiddleware, (req, res) => {
-  try {
-    const { username, password, name, image } = req.body;
-    const newUser = createUser(username, password, name, image);
-    res.status(201).json(newUser);
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Something went wrong while creating a new user!");
-  }
+  const { username, password, name, image } = req.body;
+  const newUser = createUser(username, password, name, image);
+  res.status(201).json(newUser);
 });
 
 // Second '/:id' routes
 userRouter.get("/:id", (req, res) => {
-  try {
-    const { id } = req.params;
-    const user = getUserById(id);
+  const { id } = req.params;
+  const user = getUserById(id);
 
-    if (!user) {
-      res.status(404).send(`User with id ${id} was not found!`);
-    } else {
-      res.status(200).json(user);
-    }
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Something went wrong while getting user by Id!");
+  if (!user) {
+    res.status(404).send(`User with id ${id} was not found!`);
+  } else {
+    res.status(200).json(user);
   }
 });
 
 userRouter.put("/:id", authMiddleware, (req, res) => {
-  try {
-    const { id } = req.params;
-    const { username, password, name, image } = req.body;
-    const updatedUser = updateUserById(id, username, password, name, image);
-    res.status(200).json(updatedUser);
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Something went wrong while updating user by Id!");
-  }
+  const { id } = req.params;
+  const { username, password, name, image } = req.body;
+  const updatedUser = updateUserById(id, username, password, name, image);
+  res.status(200).json(updatedUser);
 });
 
 userRouter.delete("/:id", authMiddleware, (req, res) => {
-  try {
-    const { id } = req.params;
-    const deletedUserId = deleteUser(id);
+  const { id } = req.params;
+  const deletedUserId = deleteUser(id);
 
-    if (!deletedUserId) {
-      res.status(404).send(`User with id${id} was not found!`);
-    } else {
-      res.status(200).json({
-        message: `User with id${deletedUserId} has been deleted`,
-      });
-    }
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Something went wrong while deleting a user!");
+  if (!deletedUserId) {
+    res.status(404).send(`User with id${id} was not found!`);
+  } else {
+    res.status(200).json({
+      message: `User with id${deletedUserId} has been deleted`,
+    });
   }
 });
 

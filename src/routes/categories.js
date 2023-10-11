@@ -23,60 +23,40 @@ categoryRouter.get("/", (req, res) => {
 });
 
 categoryRouter.post("/", authMiddleware, (req, res) => {
-  try {
-    const { name } = req.body;
-    const newCategory = createCategory(name);
-    res.status(201).json(newCategory);
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Something went wrong while creating a new category!");
-  }
+  const { name } = req.body;
+  const newCategory = createCategory(name);
+  res.status(201).json(newCategory);
 });
 
 // Second '/:id' routes
 categoryRouter.get("/:id", (req, res) => {
-  try {
-    const { id } = req.params;
-    const category = getCategoryById(id);
+  const { id } = req.params;
+  const category = getCategoryById(id);
 
-    if (!category) {
-      res.status(404).send(`Category with id ${id} was not found!`);
-    } else {
-      res.status(200).json(category);
-    }
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Something went wrong while getting category by Id!");
+  if (!category) {
+    res.status(404).send(`Category with id ${id} was not found!`);
+  } else {
+    res.status(200).json(category);
   }
 });
 
 categoryRouter.put("/:id", authMiddleware, (req, res) => {
-  try {
-    const { id } = req.params;
-    const { name } = req.body;
-    const updatedCategory = updateCategoryById(id, name);
-    res.status(200).json(updatedCategory);
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Something went wrong while updating category by Id!");
-  }
+  const { id } = req.params;
+  const { name } = req.body;
+  const updatedCategory = updateCategoryById(id, name);
+  res.status(200).json(updatedCategory);
 });
 
 categoryRouter.delete("/:id", authMiddleware, (req, res) => {
-  try {
-    const { id } = req.params;
-    const deletedCategoryId = deleteCategory(id);
+  const { id } = req.params;
+  const deletedCategoryId = deleteCategory(id);
 
-    if (!deletedCategoryId) {
-      res.status(404).send(`Category with id${id} was not found!`);
-    } else {
-      res.status(200).json({
-        message: `Category with id${deletedCategoryId} has been deleted`,
-      });
-    }
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Something went wrong while deleting a category!");
+  if (!deletedCategoryId) {
+    res.status(404).send(`Category with id${id} was not found!`);
+  } else {
+    res.status(200).json({
+      message: `Category with id${deletedCategoryId} has been deleted`,
+    });
   }
 });
 
