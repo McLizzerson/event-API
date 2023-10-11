@@ -6,6 +6,7 @@ import eventRouter from "./routes/events.js";
 import userRouter from "./routes/users.js";
 import loginRouter from "./routes/login.js";
 import logMiddleware from "./middleware/logMiddleware.js";
+import errorHandler from "./middleware/errorHandler.js";
 
 const app = express();
 
@@ -53,6 +54,7 @@ app.use("/login", loginRouter);
 // Error handling
 // The error handler must be registered before any other error middleware and after all controllers
 app.use(Sentry.Handlers.errorHandler());
+app.use(errorHandler);
 
 app.listen(3000, () => {
   console.log("Server is listening on port 3000");
