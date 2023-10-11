@@ -11,10 +11,12 @@ const updateEventById = (
   startTime,
   endTime
 ) => {
-  const event = eventData.events.find((event) => event.id === String(id));
+  const event = eventData.events.find(
+    (event) => String(event.id) === String(id)
+  );
   console.log(event);
 
-  event.createdBy = String(userId) ?? event.createdBy;
+  event.createdBy = userId ?? event.createdBy;
   event.title = title ?? event.title;
   event.description = description ?? event.description;
   event.image = image ?? event.image;
@@ -25,8 +27,5 @@ const updateEventById = (
 
   return event;
 };
-
-const example = updateEventById(1, "2");
-console.log(example);
 
 export default updateEventById;
