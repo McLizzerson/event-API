@@ -1,4 +1,5 @@
 import userData from "../../data/users.json" assert { type: "json" };
+import NotFoundError from "../../errors/notFoundError.js";
 
 const deleteUser = (id) => {
   const userIndex = userData.users.findIndex(
@@ -6,7 +7,7 @@ const deleteUser = (id) => {
   );
 
   if (userIndex === -1) {
-    throw new Error(`User with id ${id} was not found!`);
+    throw new NotFoundError("User", id);
   }
 
   userData.users.splice(userIndex, 1);

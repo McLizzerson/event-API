@@ -5,10 +5,10 @@ import createUser from "../services/users/createUser.js";
 import deleteUser from "../services/users/deleteUser.js";
 import updateUserById from "../services/users/updateUserById.js";
 import authMiddleware from "../middleware/auth.js";
+import notFoundErrorHandler from "../middleware/notFoundErrorHandler.js";
 
 const userRouter = express.Router();
 
-// First '/' routes, main routes
 userRouter.get("/", (req, res) => {
   const { name } = req.query;
   const users = getUsers(name);
@@ -21,36 +21,39 @@ userRouter.post("/", authMiddleware, (req, res) => {
   res.status(201).json(newUser);
 });
 
-// Second '/:id' routes
-userRouter.get("/:id", (req, res) => {
-  const { id } = req.params;
-  const user = getUserById(id);
-
-  if (!user) {
-    res.status(404).send(`User with id ${id} was not found!`);
-  } else {
+userRouter.get(
+  "/:id",
+  (req, res) => {
+    const { id } = req.params;
+    const user = getUserById(id);
     res.status(200).json(user);
-  }
-});
+  },
+  notFoundErrorHandler
+);
 
-userRouter.put("/:id", authMiddleware, (req, res) => {
-  const { id } = req.params;
-  const { username, password, name, image } = req.body;
-  const updatedUser = updateUserById(id, username, password, name, image);
-  res.status(200).json(updatedUser);
-});
+userRouter.put(
+  "/:id",
+  authMiddleware,
+  (req, res) => {
+    const { id } = req.params;
+    const { username, password, name, image } = req.body;
+    const updatedUser = updateUserById(id, username, password, name, image);
+    res.status(200).json(updatedUser);
+  },
+  notFoundErrorHandler
+);
 
-userRouter.delete("/:id", authMiddleware, (req, res) => {
-  const { id } = req.params;
-  const deletedUserId = deleteUser(id);
-
-  if (!deletedUserId) {
-    res.status(404).send(`User with id${id} was not found!`);
-  } else {
+userRouter.delete(
+  "/:id",
+  authMiddleware,
+  (req, res) => {
+    const { id } = req.params;
+    const deletedUserId = deleteUser(id);
     res.status(200).json({
       message: `User with id${deletedUserId} has been deleted`,
     });
-  }
-});
+  },
+  notFoundErrorHandler
+);
 
 export default userRouter;
