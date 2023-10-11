@@ -1,4 +1,5 @@
 import eventData from "../../data/events.json" assert { type: "json" };
+import NotFoundError from "../../errors/notFoundError.js";
 
 const deleteEvent = (id) => {
   const eventIndex = eventData.events.findIndex(
@@ -6,7 +7,7 @@ const deleteEvent = (id) => {
   );
 
   if (eventIndex === -1) {
-    throw new Error(`Event with id ${id} was not found!`);
+    throw new NotFoundError("Event", id);
   }
 
   eventData.events.splice(eventIndex, 1);
