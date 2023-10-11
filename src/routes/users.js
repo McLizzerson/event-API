@@ -38,7 +38,9 @@ userRouter.put(
     const { id } = req.params;
     const { username, password, name, image } = req.body;
     const updatedUser = updateUserById(id, username, password, name, image);
-    res.status(200).json(updatedUser);
+    res
+      .status(200)
+      .json({ message: `User with id ${id} has been updated succesfully` });
   },
   notFoundErrorHandler
 );
