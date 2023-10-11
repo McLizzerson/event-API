@@ -11,7 +11,8 @@ const userRouter = express.Router();
 // First '/' routes, main routes
 userRouter.get("/", (req, res) => {
   try {
-    const users = getUsers();
+    const { name } = req.query;
+    const users = getUsers(name);
     res.status(200).json(users);
   } catch (error) {
     console.log(error);
