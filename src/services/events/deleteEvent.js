@@ -6,7 +6,7 @@ const deleteEvent = (id) => {
   );
 
   if (eventIndex === -1) {
-    throw new Error(`Category with id ${id} was not found!`);
+    throw new Error(`Event with id ${id} was not found!`);
   }
 
   eventData.events.splice(eventIndex, 1);
