@@ -4,6 +4,7 @@ import getUserById from "../services/users/getUserById.js";
 import createUser from "../services/users/createUser.js";
 import deleteUser from "../services/users/deleteUser.js";
 import updateUserById from "../services/users/updateUserById.js";
+import authMiddleware from "../middleware/auth.js";
 
 const userRouter = express.Router();
 
@@ -18,7 +19,7 @@ userRouter.get("/", (req, res) => {
   }
 });
 
-userRouter.post("/", (req, res) => {
+userRouter.post("/", authMiddleware, (req, res) => {
   try {
     const { username, password, name, image } = req.body;
     const newUser = createUser(username, password, name, image);
@@ -46,7 +47,7 @@ userRouter.get("/:id", (req, res) => {
   }
 });
 
-userRouter.put("/:id", (req, res) => {
+userRouter.put("/:id", authMiddleware, (req, res) => {
   try {
     const { id } = req.params;
     const { username, password, name, image } = req.body;
@@ -58,7 +59,7 @@ userRouter.put("/:id", (req, res) => {
   }
 });
 
-userRouter.delete("/:id", (req, res) => {
+userRouter.delete("/:id", authMiddleware, (req, res) => {
   try {
     const { id } = req.params;
     const deletedUserId = deleteUser(id);

@@ -4,6 +4,7 @@ import getCategoryById from "../services/categories/getCategoryById.js";
 import createCategory from "../services/categories/createCategory.js";
 import deleteCategory from "../services/categories/deleteCategory.js";
 import updateCategoryById from "../services/categories/updateCategoryById.js";
+import authMiddleware from "../middleware/auth.js";
 
 const categoryRouter = express.Router();
 
@@ -21,7 +22,7 @@ categoryRouter.get("/", (req, res) => {
   }
 });
 
-categoryRouter.post("/", (req, res) => {
+categoryRouter.post("/", authMiddleware, (req, res) => {
   try {
     const { name } = req.body;
     const newCategory = createCategory(name);
@@ -49,7 +50,7 @@ categoryRouter.get("/:id", (req, res) => {
   }
 });
 
-categoryRouter.put("/:id", (req, res) => {
+categoryRouter.put("/:id", authMiddleware, (req, res) => {
   try {
     const { id } = req.params;
     const { name } = req.body;
@@ -61,7 +62,7 @@ categoryRouter.put("/:id", (req, res) => {
   }
 });
 
-categoryRouter.delete("/:id", (req, res) => {
+categoryRouter.delete("/:id", authMiddleware, (req, res) => {
   try {
     const { id } = req.params;
     const deletedCategoryId = deleteCategory(id);

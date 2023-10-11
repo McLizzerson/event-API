@@ -4,6 +4,7 @@ import getEventById from "../services/events/getEventById.js";
 import createEvent from "../services/events/createEvent.js";
 import deleteEvent from "../services/events/deleteEvent.js";
 import updateEventById from "../services/events/updateEventById.js";
+import authMiddleware from "../middleware/auth.js";
 
 const eventRouter = express.Router();
 
@@ -19,7 +20,7 @@ eventRouter.get("/", (req, res) => {
   }
 });
 
-eventRouter.post("/", (req, res) => {
+eventRouter.post("/", authMiddleware, (req, res) => {
   try {
     const {
       userId,
@@ -65,7 +66,7 @@ eventRouter.get("/:id", (req, res) => {
   }
 });
 
-eventRouter.put("/:id", (req, res) => {
+eventRouter.put("/:id", authMiddleware, (req, res) => {
   try {
     const { id } = req.params;
     const {
@@ -96,7 +97,7 @@ eventRouter.put("/:id", (req, res) => {
   }
 });
 
-eventRouter.delete("/:id", (req, res) => {
+eventRouter.delete("/:id", authMiddleware, (req, res) => {
   try {
     const { id } = req.params;
     const deletedEventId = deleteEvent(id);
