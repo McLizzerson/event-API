@@ -1,6 +1,12 @@
-import events from "../../data/events.json" assert { type: "json" };
+import eventData from "../../data/events.json" assert { type: "json" };
 
-const getEvents = () => {
+const getEvents = (title) => {
+  let events = eventData.events;
+
+  if (title) {
+    events = events.filter((event) => event.title === title);
+  }
+
   return events;
 };
 

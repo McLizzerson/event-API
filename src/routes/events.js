@@ -12,7 +12,8 @@ const eventRouter = express.Router();
 
 eventRouter.get("/", (req, res) => {
   try {
-    const events = getEvents();
+    const { title } = req.query;
+    const events = getEvents(title);
     res.status(200).json(events);
   } catch (error) {
     console.log(error);
