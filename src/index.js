@@ -3,6 +3,7 @@ import * as Sentry from "@sentry/node";
 import "dotenv/config";
 import categoryRouter from "./routes/categories.js";
 import eventRouter from "./routes/events.js";
+import userRouter from "./routes/users.js";
 
 const app = express();
 
@@ -40,6 +41,7 @@ app.get("/", (req, res) => {
 
 app.use("/categories", categoryRouter);
 app.use("/events", eventRouter);
+app.use("/users", userRouter);
 
 // ------------------------------------------------
 // ------------------------------------------------
