@@ -1,4 +1,5 @@
 import categoryData from "../../data/categories.json" assert { type: "json" };
+import NotFoundError from "../../errors/notFoundError.js";
 
 const deleteCategory = (id) => {
   const categoryIndex = categoryData.categories.findIndex(
@@ -6,7 +7,7 @@ const deleteCategory = (id) => {
   );
 
   if (categoryIndex === -1) {
-    throw new Error(`Category with id ${id} was not found!`);
+    throw new NotFoundError("Category", id);
   }
 
   categoryData.categories.splice(categoryIndex, 1);
