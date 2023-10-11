@@ -5,6 +5,7 @@ import categoryRouter from "./routes/categories.js";
 import eventRouter from "./routes/events.js";
 import userRouter from "./routes/users.js";
 import loginRouter from "./routes/login.js";
+import logMiddleware from "./middleware/logMiddleware.js";
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use(Sentry.Handlers.tracingHandler());
 // ------------------------------------------------
 // Rest of our app here
 app.use(express.json());
+app.use(logMiddleware);
 
 app.get("/", (req, res) => {
   res.send("Hello world!");
