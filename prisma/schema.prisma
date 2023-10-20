@@ -10,4 +10,43 @@ datasource db {
   url = env("DATABASE_URL")
   relationMode = "prisma"
 }
-  
+
+ // model for categories
+model Category {
+  id String @id @default(uuid())
+  name String
+  events Event[]
+}
+
+  // model for users 
+model User {
+  id String @id @default(uuid())
+  username String @unique
+  password String
+  name String
+  // is there another data type for a URL??
+  image String
+  events Event[]
+}
+
+  // model for events
+model Event {
+  id String @id @default(uuid())
+  title String
+  description String
+  // image url??
+  image String
+  location String
+  startTime DateTime
+  endTime DateTime
+
+  // relations
+  categoryIds Category[]
+  createdBy String 
+
+  user User @relation(fields: [createdBy], references: [id])
+
+  @@index([createdBy])
+
+}
+
