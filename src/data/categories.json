@@ -2,15 +2,15 @@
   "categories": [
     {
       "name": "sports",
-      "id": 1
+      "id": "1"
     },
     {
       "name": "games",
-      "id": 2
+      "id": "2"
     },
     {
       "name": "relaxation",
-      "id": 3
+      "id": "3"
     }
   ]
 }
