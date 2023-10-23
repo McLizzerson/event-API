@@ -34,7 +34,21 @@ async function main() {
     await prisma.event.upsert({
       where: { id: event.id },
       update: {},
-      create: event,
+      create: {
+        id: event.id,
+        title: event.title,
+        description: event.description,
+        image: event.image,
+        location: event.location,
+        startTime: event.startTime,
+        endTime: event.endTime,
+        categories: {
+          connect: event.categoryIds.map((id) => ({ id: id })),
+        },
+        createdBy: {
+          connect: { id: event.createdBy },
+        },
+      },
     });
   }
 }

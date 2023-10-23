@@ -42,12 +42,12 @@ model Event {
   endTime DateTime
 
   // relations
-  categoryIds Category[]
-  createdBy String 
+  categories Category[]
+  userId String 
 
-  user User @relation(fields: [createdBy], references: [id])
+  createdBy User @relation(fields: [userId], references: [id])
 
-  @@index([createdBy])
+  @@index([userId])
 
 }
 
