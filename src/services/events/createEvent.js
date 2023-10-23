@@ -1,31 +1,34 @@
-import eventData from "../../data/events.json" assert { type: "json" };
-import { v4 as uuid } from "uuid";
+import { PrismaClient } from "@prisma/client";
 
-// check check double check with these parameters!!
-const createEvent = (
-  userId,
+const createEvent = async (
   title,
   description,
-  imageUrl,
-  categoryIds,
   location,
+  image,
   startTime,
-  endTime
+  endTime,
+  createdBy,
+  categoryIds
 ) => {
-  const newEvent = {
-    id: uuid(),
-    createdBy: userId,
-    title: title,
-    description: description,
-    image: imageUrl,
-    categoryIds: categoryIds,
-    location: location,
-    startTime: startTime,
-    endTime: endTime,
-  };
+  const prisma = new PrismaClient();
 
-  //   does this really work or is this for show?
-  eventData.events.push(newEvent);
+  const newEvent = await prisma.event.create({
+    data: {
+      title,
+      description,
+      location,
+      image,
+      startTime,
+      endTime,
+      createdBy: {
+        connect: { id: createdBy },
+      },
+      categories: {
+        connect: categoryIds.map((id) => ({ id })),
+      },
+    },
+  });
+
   return newEvent;
 };
 

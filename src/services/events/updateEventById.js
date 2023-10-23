@@ -1,34 +1,43 @@
-import eventData from "../../data/events.json" assert { type: "json" };
-import NotFoundError from "../../errors/notFoundError.js";
+import { PrismaClient } from "@prisma/client";
 
-const updateEventById = (
+const updateEventById = async (
   id,
-  userId,
   title,
   description,
-  image,
-  categoryIds,
   location,
+  image,
   startTime,
-  endTime
+  endTime,
+  createdBy,
+  categoryIds
 ) => {
-  const event = eventData.events.find(
-    (event) => String(event.id) === String(id)
-  );
+  const prisma = new PrismaClient();
 
-  if (!event) {
-    throw new NotFoundError("Event", id);
-  }
-  event.createdBy = userId ?? event.createdBy;
-  event.title = title ?? event.title;
-  event.description = description ?? event.description;
-  event.image = image ?? event.image;
-  event.categoryIds = categoryIds ?? event.categoryIds;
-  event.location = location ?? event.location;
-  event.startTime = startTime ?? event.startTime;
-  event.endTime = endTime ?? event.endTime;
+  const updatedEvent = await prisma.event.update({
+    where: {
+      id,
+    },
+    data: {
+      title,
+      description,
+      location,
+      image,
+      startTime,
+      endTime,
+      createdBy: createdBy
+        ? {
+            connect: { id: createdBy },
+          }
+        : undefined,
+      categories: categoryIds
+        ? {
+            set: categoryIds.map((id) => ({ id })),
+          }
+        : undefined,
+    },
+  });
 
-  return event;
+  return updatedEvent;
 };
 
 export default updateEventById;

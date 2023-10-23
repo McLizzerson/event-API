@@ -1,12 +1,14 @@
-import eventData from "../../data/events.json" assert { type: "json" };
+import { PrismaClient } from "@prisma/client";
 import NotFoundError from "../../errors/notFoundError.js";
 
-// Convert event.id to number? Think about what to convert to what.
+const getEventById = async (id) => {
+  const prisma = new PrismaClient();
 
-const getEventById = (id) => {
-  const event = eventData.events.find(
-    (event) => String(event.id) === String(id)
-  );
+  const event = await prisma.event.findUnique({
+    where: {
+      id,
+    },
+  });
 
   if (!event) {
     throw new NotFoundError("Event", id);
