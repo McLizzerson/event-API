@@ -9,24 +9,28 @@ import notFoundErrorHandler from "../middleware/notFoundErrorHandler.js";
 
 const userRouter = express.Router();
 
-userRouter.get("/", (req, res) => {
+userRouter.get("/", async (req, res) => {
   const { name } = req.query;
-  const users = getUsers(name);
+  const users = await getUsers(name);
   res.status(200).json(users);
 });
 
-userRouter.post("/", authMiddleware, (req, res) => {
+userRouter.post("/", authMiddleware, async (req, res) => {
   const { username, password, name, image } = req.body;
-  const newUser = createUser(username, password, name, image);
+  const newUser = await createUser(username, password, name, image);
   res.status(201).json(newUser);
 });
 
 userRouter.get(
   "/:id",
-  (req, res) => {
-    const { id } = req.params;
-    const user = getUserById(id);
-    res.status(200).json(user);
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const user = await getUserById(id);
+      res.status(200).json(user);
+    } catch (error) {
+      next(error);
+    }
   },
   notFoundErrorHandler
 );
@@ -34,13 +38,21 @@ userRouter.get(
 userRouter.put(
   "/:id",
   authMiddleware,
-  (req, res) => {
-    const { id } = req.params;
-    const { username, password, name, image } = req.body;
-    const updatedUser = updateUserById(id, username, password, name, image);
-    res
-      .status(200)
-      .json({ message: `User with id ${id} has been updated succesfully` });
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const { username, password, name, image } = req.body;
+      const updatedUser = await updateUserById(
+        id,
+        username,
+        password,
+        name,
+        image
+      );
+      res.status(200).json(updatedUser);
+    } catch (error) {
+      next(error);
+    }
   },
   notFoundErrorHandler
 );
@@ -48,12 +60,16 @@ userRouter.put(
 userRouter.delete(
   "/:id",
   authMiddleware,
-  (req, res) => {
-    const { id } = req.params;
-    const deletedUserId = deleteUser(id);
-    res.status(200).json({
-      message: `User with id${deletedUserId} has been deleted`,
-    });
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const deletedUserId = await deleteUser(id);
+      res.status(200).json({
+        message: `User with id${deletedUserId} has been deleted`,
+      });
+    } catch (error) {
+      next(error);
+    }
   },
   notFoundErrorHandler
 );

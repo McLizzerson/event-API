@@ -1,8 +1,14 @@
-import userData from "../../data/users.json" assert { type: "json" };
+import { PrismaClient } from "@prisma/client";
 import NotFoundError from "../../errors/notFoundError.js";
 
-const getUserById = (id) => {
-  const user = userData.users.find((user) => String(user.id) === String(id));
+const getUserById = async (id) => {
+  const prisma = new PrismaClient();
+
+  const user = await prisma.user.findUnique({
+    where: {
+      id,
+    },
+  });
 
   if (!user) {
     throw new NotFoundError("User", id);
