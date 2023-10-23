@@ -1,15 +1,13 @@
-import categoryData from "../../data/categories.json" assert { type: "json" };
-import { v4 as uuid } from "uuid";
+import { PrismaClient } from "@prisma/client";
 
-const createCategory = (name) => {
-  const newCategory = {
-    id: uuid(),
-    name: name,
-  };
+const createCategory = async (name) => {
+  const prisma = new PrismaClient();
 
-  //   does this really work or is this for show?
-  categoryData.categories.push(newCategory);
-  return newCategory;
+  return prisma.category.create({
+    data: {
+      name,
+    },
+  });
 };
 
 export default createCategory;

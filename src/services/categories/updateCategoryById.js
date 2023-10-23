@@ -1,18 +1,25 @@
-import categoryData from "../../data/categories.json" assert { type: "json" };
+import { PrismaClient } from "@prisma/client";
 import NotFoundError from "../../errors/notFoundError.js";
 
-const updateCategoryById = (id, name) => {
-  const category = categoryData.categories.find(
-    (category) => String(category.id) === String(id)
-  );
+const updateCategoryById = async (id, name) => {
+  const prisma = new PrismaClient();
 
-  if (!category) {
+  const updatedCategory = await prisma.category.updateMany({
+    where: {
+      id: id,
+    },
+    data: {
+      name: name,
+    },
+  });
+
+  if (!updatedCategory || updatedCategory.count === 0) {
     throw new NotFoundError("Category", id);
   }
 
-  category.name = name ?? category.name;
-
-  return category;
+  return {
+    message: `Category with id ${id} was updated!`,
+  };
 };
 
 export default updateCategoryById;
